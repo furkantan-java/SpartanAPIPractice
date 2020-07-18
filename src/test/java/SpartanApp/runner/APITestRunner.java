@@ -8,12 +8,12 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src\\test\\resources\\features\\api",
         glue = "SpartanApp\\step_definitions",
-        dryRun = true,
+        dryRun = false,
         strict = false,
         tags = "",
         plugin = {
-                "html:target/CucumberDefaultReport",
-                "json:target/apitest.json",
+                "html:target/default-report",
+                "json:target/cucumber.json",
                 "rerun:rerun.txt"
         }
 ) public class APITestRunner {
