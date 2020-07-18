@@ -1,0 +1,60 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "start_timestamp": "2020-07-18T17:36:35.455Z",
+        "line": 5,
+        "name": "Display All Spartans",
+        "description": "",
+        "id": "display-all-spartans;display-all-spartans",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "status": "undefined"
+            },
+            "line": 6,
+            "name": "autherization credentials are provided for \"admin\"",
+            "match": {},
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "status": "undefined"
+            },
+            "line": 7,
+            "name": "user accepts content type \"application/json\"",
+            "match": {},
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "undefined"
+            },
+            "line": 8,
+            "name": "user sends GET request to \"/api/spartans\"",
+            "match": {},
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "status": "undefined"
+            },
+            "line": 9,
+            "name": "user verifies that response status code is 200",
+            "match": {},
+            "keyword": "Then "
+          }
+        ]
+      }
+    ],
+    "name": "Display All Spartans",
+    "description": "  Verify status code 200 when send get request to see all spartans",
+    "id": "display-all-spartans",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/api/GetAllSpartans.feature",
+    "tags": []
+  }
+]
