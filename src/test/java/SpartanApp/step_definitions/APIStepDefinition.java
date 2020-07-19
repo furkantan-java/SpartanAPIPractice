@@ -50,10 +50,10 @@ public class APIStepDefinition {
     @When("user sends GET request to {string}")
     public void user_sends_GET_request_to(String endPoint) {
         response = given().
-                accept(contentType).
-                auth().basic(username, password).
+                        accept(contentType).
+                        auth().basic(username, password).
                 when().
-                get(endPoint).prettyPeek();
+                        get(endPoint).prettyPeek();
     }
 
     @Then("user verifies that response status code is {int}")
@@ -96,23 +96,23 @@ public class APIStepDefinition {
     @Then("user sends POST request to {string}")
     public void user_sends_POST_request_to(String endPoint) {
         response = given().
-                auth().basic(username, password).
-                contentType(contentType).
-                accept(contentType).
-                body(spartan).
+                        auth().basic(username, password).
+                        contentType(contentType).
+                        accept(contentType).
+                        body(spartan).
                 when().
-                post(endPoint).prettyPeek();
+                        post(endPoint).prettyPeek();
     }
 
     @Then("user verifies that Spartan Born")
     public void user_verifies_that_Spartan_Born() {
         response.then().
                 assertThat().
-                body("success", is("A Spartan is Born!")).
+                        body("success", is("A Spartan is Born!")).
                 and().
-                body("data.name", is(spartan.getName())).
-                body("data.gender", is(spartan.getGender())).
-                body("data.phone", is(spartan.getMobilePhoneNumber()));
+                        body("data.name", is(spartan.getName())).
+                        body("data.gender", is(spartan.getGender())).
+                        body("data.phone", is(spartan.getMobilePhoneNumber()));
     }
 
 
@@ -180,7 +180,7 @@ public class APIStepDefinition {
                         accept(contentType).
                         contentType(contentType).
                         body(jsonFile).
-                        when().
+                when().
                         post(endPoint).prettyPeek();
 
     }
