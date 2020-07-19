@@ -14,6 +14,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Assert;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -72,9 +73,16 @@ public class APIStepDefinition {
                 //and().
                 //contentType(ContentType.JSON).
                         and().
-                body("size()", is(100));
+                body("size()", is(numberOfSpartan));
 
     }
+
+    /*******************************************************************************
+     *
+     *
+     * Add multiple spartans
+     * @param dataTable
+     */
 
     @When("user create Spartan POJO Object with following information")
     public void user_create_Spartan_POJO_Object_with_following_information(List<Map<String, String>> dataTable) {
@@ -86,14 +94,14 @@ public class APIStepDefinition {
     }
 
     @Then("user sends POST request to {string}")
-    public void user_sends_POST_request_to(String string) {
+    public void user_sends_POST_request_to(String endPoint) {
         response = given().
                 auth().basic(username, password).
                 contentType(contentType).
                 accept(contentType).
                 body(spartan).
                 when().
-                post("/api/spartans").prettyPeek();
+                post(endPoint).prettyPeek();
     }
 
     @Then("user verifies that Spartan Born")
@@ -107,6 +115,14 @@ public class APIStepDefinition {
                 body("data.phone", is(spartan.getMobilePhoneNumber()));
     }
 
+
+    /*******************************************************************************
+     *
+     *
+     * Add just one spartan
+     * @param dataTable
+     */
+
     @When("user create Spartan POJO Object with List information")
     public void user_create_Spartan_POJO_Object_with_List_information(List<String> dataTable) {
         String name = dataTable.get(0);
@@ -114,5 +130,58 @@ public class APIStepDefinition {
         Integer mobilePhoneNumber = Integer.valueOf(dataTable.get(2));
 
         spartan = new Spartan(name, gender, mobilePhoneNumber);
+    }
+
+
+    /***********************************************
+     *
+     *
+     * Add Spartan with JSON Object
+     *
+     */
+
+    @Then("user sends POST request to {string} with following JSON Object")
+    public void user_sends_POST_request_to_with_following_JSON_Object(String endPoint, List<String> dataTable) {
+
+        //String jsonObject = "{ \"name\": \"Furkan\", \"gender\": \"Male\", \"phone\": 1234567890 }";
+        String jsonObject = "{ \"name\": \""+dataTable.get(0)+"\", \"gender\": \""+dataTable.get(1)+"\", \"phone\": "+dataTable.get(2)+" }";
+
+        response = given().
+                            auth().basic(username,password).
+                            accept(contentType).
+                            contentType(contentType).
+                            body(jsonObject).
+                    when().
+                            post(endPoint).prettyPeek();
+    }
+
+    @And("user verifies that Spartan Born in Json Response")
+    public void userVerifiesThatSpartanBornInJsonResponse() {
+        response.then().
+                assertThat().
+                body("success", is("A Spartan is Born!"));
+    }
+
+    /***********************************
+     *
+     * Add Spartan from JSON file
+     * @param endPoint
+     */
+    @Then("user sends POST request to {string} from JSON file")
+    public void userSendsPOSTRequestToFromJSONFile(String endPoint) {
+
+
+        //System.getProperty("file.separator")
+        File jsonFile = new File(System.getProperty("user.dir") + File.separator + "SpartanToAdd.json");
+
+        response =
+                given().
+                        auth().basic(username,password).
+                        accept(contentType).
+                        contentType(contentType).
+                        body(jsonFile).
+                        when().
+                        post(endPoint).prettyPeek();
+
     }
 }

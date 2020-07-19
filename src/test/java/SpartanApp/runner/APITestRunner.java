@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         glue = "SpartanApp/step_definitions",
         dryRun = false,
         strict = false,
-        tags = "@add_spartan_with_list",
+        tags = "@add_spartan_with_JSONFile",
         plugin = {
                 "json:target/cucumber.json",
                 "rerun:rerun.txt"
