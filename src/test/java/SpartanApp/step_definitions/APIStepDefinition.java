@@ -1,11 +1,13 @@
 package SpartanApp.step_definitions;
 
 import SpartanApp.utilities.ConfigurationReader;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -53,4 +55,19 @@ public class APIStepDefinition {
         Assert.assertEquals(statusCode, response.getStatusCode());
     }
 
+    @And("user verifies that response has {int} Spartans")
+    public void userVerifiesThatResponseHasSpartans(int numberOfSpartan) {
+        //response.then().statusCode(200);
+
+        response.then().
+                assertThat().
+                    statusCode(200).
+                and().
+                    header("Content-Type","application/json;charset=UTF-8").
+                //and().
+                    //contentType(ContentType.JSON).
+                and().
+                    body("size", is(100));
+
+    }
 }
