@@ -8,9 +8,9 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "SpartanApp/step_definitions",
-        dryRun = false,
+        dryRun = true,
         strict = false,
-        tags = "",
+        tags = "@api",
         plugin = {
                 "json:target/cucumber.json",
                 "rerun:rerun.txt"

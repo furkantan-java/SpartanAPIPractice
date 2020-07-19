@@ -1,5 +1,6 @@
 package SpartanApp.step_definitions;
 
+import SpartanApp.pojo.Spartan;
 import SpartanApp.utilities.ConfigurationReader;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -13,6 +14,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Assert;
 
+import java.util.Map;
+
 public class APIStepDefinition {
 
 
@@ -20,10 +23,11 @@ public class APIStepDefinition {
     private String password;
     private ContentType contentType;
     private Response response;
+    private Spartan spartan;
 
 
-    @Given("autherization credentials are provided for {string}")
-    public void autherization_credentials_are_provided_for(String userType) {
+    @Given("authorization credentials are provided for {string}")
+    public void authorization_credentials_are_provided_for(String userType) {
         if (userType.equals("admin")) {
             username = ConfigurationReader.getProperty("admin_username");
             password = ConfigurationReader.getProperty("admin_password");
@@ -69,5 +73,37 @@ public class APIStepDefinition {
                 and().
                     body("size()", is(100));
 
+    }
+
+    @When("user create Spartan POJO Object with following information")
+    public void user_create_Spartan_POJO_Object_with_following_information(Map<String,Object> dataTable) {
+//        @When("user create Spartan POJO Object with following information")
+//        public void user_create_Spartan_POJO_Object_with_following_information(List<Object> dataTable) {
+//        String name = (String)dataTable.get(0);
+//        String gender = (String)dataTable.get(1);
+//        Integer mobilePhoneNumber = (Integer)dataTable.get(2);
+
+        String name = (String)dataTable.get("name");
+        String gender = (String)dataTable.get("gender");
+        Integer mobilePhoneNumber = (Integer)dataTable.get("phone");
+
+        spartan = new Spartan(name,gender,mobilePhoneNumber);
+    }
+
+    @Then("user sends POST request to {string}")
+    public void user_sends_POST_request_to(String string) {
+        response = given().
+                            auth().basic(username,password).
+                            contentType(contentType).
+                            accept(contentType).
+                            body(spartan).
+                    when().;
+
+    }
+
+    @Then("user verifies that Spartan Born")
+    public void user_verifies_that_Spartan_Born() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
     }
 }
