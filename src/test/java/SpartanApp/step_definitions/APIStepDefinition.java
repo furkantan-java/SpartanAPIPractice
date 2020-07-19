@@ -184,4 +184,34 @@ public class APIStepDefinition {
                         post(endPoint).prettyPeek();
 
     }
+
+    @Then("user sends delete request to {string} with last id")
+    public void userSendsDeleteRequestToWithLastId(String endPoint) {
+        Response response1 = given().auth().basic(username,password).
+                accept(contentType).contentType(contentType).
+                when().get(endPoint).prettyPeek();
+
+
+        //get first spartan's id
+        int id = response1.jsonPath().getInt("[0].id");
+
+
+
+        //delete multiple spartans
+//        for (int i = 1; i < 20 ; i++) {
+//            response = given().
+//                    auth().basic(username, password).
+//                    accept(contentType).
+//                    when().
+//                    delete(endPoint+"/"+i).prettyPeek();
+//        }
+
+        response = given().
+                            auth().basic(username, password).
+                            accept(contentType).
+                        when().
+                                delete(endPoint+"/"+id).prettyPeek();
+
+
+    }
 }
