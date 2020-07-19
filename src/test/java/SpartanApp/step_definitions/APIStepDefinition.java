@@ -67,7 +67,7 @@ public class APIStepDefinition {
                 //and().
                     //contentType(ContentType.JSON).
                 and().
-                    body("size", is(100));
+                    body("size()", is(100));
 
     }
 }
