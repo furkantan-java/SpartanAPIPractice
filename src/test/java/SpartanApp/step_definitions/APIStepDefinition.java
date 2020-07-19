@@ -193,7 +193,7 @@ public class APIStepDefinition {
 
 
         //get first spartan's id
-        int id = response1.jsonPath().getInt("[0].id");
+        Integer id = response1.jsonPath().get("max{it.id}.id");
 
 
 
