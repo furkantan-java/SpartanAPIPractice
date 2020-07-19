@@ -30,6 +30,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
+                    <!-- for parallel running Cucumber-->
+                    <parallel>classesAndMethods</parallel>
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
+                    <includes>
+                        <!-- for  run class or classes-->
+                        <include>**/*Runner*.java</include>
+                    </includes>
                     <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
             </plugin>
