@@ -14,6 +14,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Assert;
 
+import java.util.List;
 import java.util.Map;
 
 public class APIStepDefinition {
@@ -48,10 +49,10 @@ public class APIStepDefinition {
     @When("user sends GET request to {string}")
     public void user_sends_GET_request_to(String endPoint) {
         response = given().
-                        accept(contentType).
-                        auth().basic(username, password).
+                accept(contentType).
+                auth().basic(username, password).
                 when().
-                        get(endPoint).prettyPeek();
+                get(endPoint).prettyPeek();
     }
 
     @Then("user verifies that response status code is {int}")
@@ -65,45 +66,53 @@ public class APIStepDefinition {
 
         response.then().
                 assertThat().
-                    statusCode(200).
+                statusCode(200).
                 and().
-                    header("Content-Type","application/json;charset=UTF-8").
+                header("Content-Type", "application/json;charset=UTF-8").
                 //and().
-                    //contentType(ContentType.JSON).
-                and().
-                    body("size()", is(100));
+                //contentType(ContentType.JSON).
+                        and().
+                body("size()", is(100));
 
     }
 
     @When("user create Spartan POJO Object with following information")
-    public void user_create_Spartan_POJO_Object_with_following_information(Map<String,Object> dataTable) {
-//        @When("user create Spartan POJO Object with following information")
-//        public void user_create_Spartan_POJO_Object_with_following_information(List<Object> dataTable) {
-//        String name = (String)dataTable.get(0);
-//        String gender = (String)dataTable.get(1);
-//        Integer mobilePhoneNumber = (Integer)dataTable.get(2);
+    public void user_create_Spartan_POJO_Object_with_following_information(List<Map<String, String>> dataTable) {
+        String name = dataTable.get(0).get("name");
+        String gender = dataTable.get(0).get("gender");
+        Integer mobilePhoneNumber = Integer.valueOf(dataTable.get(0).get("phone"));
 
-        String name = (String)dataTable.get("name");
-        String gender = (String)dataTable.get("gender");
-        Integer mobilePhoneNumber = (Integer)dataTable.get("phone");
-
-        spartan = new Spartan(name,gender,mobilePhoneNumber);
+        spartan = new Spartan(name, gender, mobilePhoneNumber);
     }
 
     @Then("user sends POST request to {string}")
     public void user_sends_POST_request_to(String string) {
         response = given().
-                            auth().basic(username,password).
-                            contentType(contentType).
-                            accept(contentType).
-                            body(spartan).
-                    when().;
-
+                auth().basic(username, password).
+                contentType(contentType).
+                accept(contentType).
+                body(spartan).
+                when().
+                post("/api/spartans").prettyPeek();
     }
 
     @Then("user verifies that Spartan Born")
     public void user_verifies_that_Spartan_Born() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        response.then().
+                assertThat().
+                body("success", is("A Spartan is Born!")).
+                and().
+                body("data.name", is(spartan.getName())).
+                body("data.gender", is(spartan.getGender())).
+                body("data.phone", is(spartan.getMobilePhoneNumber()));
+    }
+
+    @When("user create Spartan POJO Object with List information")
+    public void user_create_Spartan_POJO_Object_with_List_information(List<String> dataTable) {
+        String name = dataTable.get(0);
+        String gender = dataTable.get(1);
+        Integer mobilePhoneNumber = Integer.valueOf(dataTable.get(2));
+
+        spartan = new Spartan(name, gender, mobilePhoneNumber);
     }
 }
